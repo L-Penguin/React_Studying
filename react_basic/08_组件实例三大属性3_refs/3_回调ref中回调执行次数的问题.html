@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回调ref中回调执行次数的问题</title>
+</head>
+<body>
+    <!-- 准备好一个"容器" -->
+    <div id="test1"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 1.创建类式组件
+        class Demo extends React.Component {
+            state = {isHot: false};
+            
+            showData = ()=> {
+                alert(this.input1.value);
+            }
+
+            saveInput = (cur)=> {
+                console.log("@", cur)
+                this.input1 = cur;
+            }
+
+            render() {
+                const isHot = this.state.isHot;
+                return (
+                    <div>
+                        <h2>今天天气很{isHot?"炎热":"凉爽"}</h2>
+                        {/* <input ref={cur=> {this.input1=cur; console.log('@', cur)}} type="text" placeholder="点击按钮提示数据"/>&nbsp; 内联形式，更新时ref的函数会执行两次，第一次传入null，第二次传入DOM元素*/}
+                        {/* class绑定函数形式 */}
+                        <input ref={this.saveInput} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                        <button onClick={this.showData}>点我提示输入的数据</button>&nbsp;
+                        <button onClick={()=> {this.setState({isHot: !this.state.isHot})}}>点我切换天气</button>
+                    </div>
+                )
+            }
+        }
+
+        // 2.渲染组件到页面
+        ReactDOM.render(<Demo/>, document.getElementById("test1"));
+    </script>
+</body>
+</html>
