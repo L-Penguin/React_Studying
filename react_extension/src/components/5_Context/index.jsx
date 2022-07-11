@@ -48,6 +48,11 @@ class B extends Component {
 
 // 函数式组件接收
 function C() {
+    /*
+        或者可以使用useContext
+        const userName = useContext('MyContext');
+        此时userName = 'tom'
+    */
     return (
         <div className='grand'>
                 <div>我是C组件</div>
